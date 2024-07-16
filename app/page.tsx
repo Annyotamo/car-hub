@@ -6,14 +6,14 @@ import SearchBar from "@/components/SearchBar";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCarData } from "@/utils";
 import { carTypes } from "@/types";
+import CarCard from "@/components/CarCard";
 
 export default function Home() {
-    const { data, isLoading, isError } = useQuery({
+    const { data, isLoading, isError, error } = useQuery({
         queryFn: async () => await fetchCarData(),
         queryKey: ["cars"],
+        retry: 1,
     });
-
-    // if (!isLoading) console.log(data?.data.map((car: carTypes) => console.log(car.model)));
 
     return (
         <main className="overflow-hidden box-border p-0 m-0">
@@ -28,24 +28,24 @@ export default function Home() {
                     <SearchBar />
                     <div className="home__filter-container">
                         <Filter title="Fuel" />
-                        <Filter title="Distance" />
+                        <Filter title="Year" />
                     </div>
                 </div>
 
                 {isLoading ? (
                     <div>Loading...</div>
-                ) : (
-                    <div>
-                        <h2>THESE are the CARs...</h2>
-                        <div>
-                            {data?.data.map((car: carTypes) => {
-                                return (
-                                    <div key={car.model}>
-                                        {car.make}: {car.model}
-                                    </div>
-                                );
-                            })}
+                ) : !isError ? (
+                    <section>
+                        <div className="home__cars-wrapper">
+                            {data?.map((car: carTypes) => (
+                                <CarCard car={car} />
+                            ))}
                         </div>
+                    </section>
+                ) : (
+                    <div className="home__error-container">
+                        <h2 className="text-black text-xl font-bold">Oops, no results</h2>
+                        <p>{error.message}</p>
                     </div>
                 )}
             </div>

@@ -12,7 +12,7 @@ export default function Navbar() {
                 <Button
                     title="Sign in"
                     type="button"
-                    containerSyles="text-primary-blue rounded-full bg-white min-w-[130px]"
+                    containerStyles="text-primary-blue rounded-full bg-white min-w-[130px]"
                 />
             </nav>
         </header>

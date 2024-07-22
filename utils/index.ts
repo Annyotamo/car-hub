@@ -1,6 +1,7 @@
+import { searchParamsTypes } from "@/types";
 import axios from "axios";
 
-export async function fetchCarData() {
+export async function fetchCarData({ maker, model, fuel, year, limit }: searchParamsTypes) {
     try {
         const res = await axios.get("https://cars-by-api-ninjas.p.rapidapi.com/v1/cars", {
             headers: {
@@ -8,7 +9,11 @@ export async function fetchCarData() {
                 "x-rapidapi-host": "cars-by-api-ninjas.p.rapidapi.com",
             },
             params: {
-                make: "bmw",
+                make: maker,
+                model,
+                fuel,
+                year,
+                limit,
             },
         });
         return res.data;

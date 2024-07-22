@@ -7,13 +7,30 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchCarData } from "@/utils";
 import { carTypes } from "@/types";
 import CarCard from "@/components/CarCard";
+import { useSearchParams } from "next/navigation";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import ErrorState from "@/components/ErrorState";
 
 export default function Home() {
-    const { data, isLoading, isError, error } = useQuery({
-        queryFn: async () => await fetchCarData(),
-        queryKey: ["cars"],
+    const searchParams = useSearchParams();
+    const maker = searchParams.get("maker");
+    const model = searchParams.get("model");
+    const fuel = searchParams.get("fuel");
+    const year = searchParams.get("year");
+    const limit = searchParams.get("limit");
+    const { data, isLoading, isError, error, refetch } = useQuery({
+        queryFn: async () =>
+            await fetchCarData({
+                maker: maker || " ",
+                model: model || " ",
+                fuel: fuel || " ",
+                year: year || "2020",
+                limit: limit || "12",
+            }),
+        queryKey: [searchParams.toString()],
         retry: 1,
     });
+    !isLoading && console.log(data);
 
     return (
         <main className="overflow-hidden box-border p-0 m-0">
@@ -33,20 +50,17 @@ export default function Home() {
                 </div>
 
                 {isLoading ? (
-                    <div>Loading...</div>
+                    <LoadingSpinner />
                 ) : !isError ? (
                     <section>
                         <div className="home__cars-wrapper">
-                            {data?.map((car: carTypes) => (
-                                <CarCard car={car} />
+                            {data?.map((car: carTypes, index: number) => (
+                                <CarCard car={car} key={index} />
                             ))}
                         </div>
                     </section>
                 ) : (
-                    <div className="home__error-container">
-                        <h2 className="text-black text-xl font-bold">Oops, no results</h2>
-                        <p>{error.message}</p>
-                    </div>
+                    <ErrorState />
                 )}
             </div>
         </main>

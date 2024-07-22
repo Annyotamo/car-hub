@@ -35,3 +35,11 @@ export interface carDetailsTypes {
     closeModal: () => void;
     car: carTypes;
 }
+
+export interface searchParamsTypes {
+    maker: string;
+    model: string;
+    fuel: string;
+    year: string;
+    limit: string;
+}

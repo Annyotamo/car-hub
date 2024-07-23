@@ -43,3 +43,13 @@ export interface searchParamsTypes {
     year: string;
     limit: string;
 }
+
+export interface filterTypes {
+    type: string;
+    options: option[];
+}
+
+interface option {
+    title: string;
+    value: string;
+}

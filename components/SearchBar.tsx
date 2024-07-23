@@ -41,7 +41,7 @@ export default function SearchBar() {
     }
 
     return (
-        <form className="searchbar" onSubmit={handleSearch}>
+        <form className="searchbar" onSubmit={handleSearch} autoComplete="off">
             <div className="searchbar__item">
                 <Maker maker={maker} setMaker={setMaker} />
                 <SearchButton classes="sm:hidden" />

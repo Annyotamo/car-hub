@@ -10,6 +10,7 @@ import CarCard from "@/components/CarCard";
 import { useSearchParams } from "next/navigation";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import ErrorState from "@/components/ErrorState";
+import { fuels, yearsOfProduction } from "@/contants";
 
 export default function Home() {
     const searchParams = useSearchParams();
@@ -44,8 +45,8 @@ export default function Home() {
                 <div className="home__filters">
                     <SearchBar />
                     <div className="home__filter-container">
-                        <Filter title="Fuel" />
-                        <Filter title="Year" />
+                        <Filter type="fuel" options={fuels} />
+                        <Filter type="year" options={yearsOfProduction} />
                     </div>
                 </div>
 
